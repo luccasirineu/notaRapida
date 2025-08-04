@@ -1,2 +1,4 @@
-package com.notaRapida.dtos;public class FaturaRequestDTO {
+package com.notaRapida.dtos;
+
+public class FaturaRequestDTO {
 }
