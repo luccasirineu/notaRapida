@@ -3,6 +3,7 @@ package com.notaRapida.dtos;
 import com.notaRapida.models.Cliente;
 import com.notaRapida.models.ItemFatura;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,29 +12,21 @@ public class FaturaRequestDTO {
     private String nomeFatura;
     private LocalDate vencimento;
     private String observacoes;
+    private BigDecimal valorTotal;
 
-    private String nomeCliente;
-    private String emailCliente;
-    private String enderecoCliente;
-    private String cidadeCliente;
-    private String ufCliente; 
-    private String cepCliente;
+    private ClienteDTO clienteDTO;
 
-    private List<ItemFatura> itens = new ArrayList<>();
+    private List<ItemFaturaRequestDTO> itens = new ArrayList<>();
 
     public FaturaRequestDTO() {
     }
 
-    public FaturaRequestDTO(String nomeFatura, LocalDate vencimento, String observacoes, String nomeCliente, String emailCliente, String enderecoCliente, String cidadeCliente, String ufCliente, String cepCliente, List<ItemFatura> itens) {
+    public FaturaRequestDTO(String nomeFatura, LocalDate vencimento, String observacoes, BigDecimal valorTotal, ClienteDTO clienteDTO, List<ItemFaturaRequestDTO> itens) {
         this.nomeFatura = nomeFatura;
         this.vencimento = vencimento;
         this.observacoes = observacoes;
-        this.nomeCliente = nomeCliente;
-        this.emailCliente = emailCliente;
-        this.enderecoCliente = enderecoCliente;
-        this.cidadeCliente = cidadeCliente;
-        this.ufCliente = ufCliente;
-        this.cepCliente = cepCliente;
+        this.valorTotal = valorTotal;
+        this.clienteDTO = clienteDTO;
         this.itens = itens;
     }
 
@@ -61,59 +54,27 @@ public class FaturaRequestDTO {
         this.observacoes = observacoes;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public ClienteDTO getClienteDTO() {
+        return clienteDTO;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setClienteDTO(ClienteDTO clienteDTO) {
+        this.clienteDTO = clienteDTO;
     }
 
-    public String getEmailCliente() {
-        return emailCliente;
-    }
-
-    public void setEmailCliente(String emailCliente) {
-        this.emailCliente = emailCliente;
-    }
-
-    public String getEnderecoCliente() {
-        return enderecoCliente;
-    }
-
-    public void setEnderecoCliente(String enderecoCliente) {
-        this.enderecoCliente = enderecoCliente;
-    }
-
-    public String getCidadeCliente() {
-        return cidadeCliente;
-    }
-
-    public void setCidadeCliente(String cidadeCliente) {
-        this.cidadeCliente = cidadeCliente;
-    }
-
-    public String getUfCliente() {
-        return ufCliente;
-    }
-
-    public void setUfCliente(String ufCliente) {
-        this.ufCliente = ufCliente;
-    }
-
-    public String getCepCliente() {
-        return cepCliente;
-    }
-
-    public void setCepCliente(String cepCliente) {
-        this.cepCliente = cepCliente;
-    }
-
-    public List<ItemFatura> getItens() {
+    public List<ItemFaturaRequestDTO> getItens() {
         return itens;
     }
 
-    public void setItens(List<ItemFatura> itens) {
+    public void setItens(List<ItemFaturaRequestDTO> itens) {
         this.itens = itens;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

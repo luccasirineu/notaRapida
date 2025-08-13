@@ -1,9 +1,16 @@
 package com.notaRapida.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String nome;
     private String email;
@@ -11,12 +18,13 @@ public class Cliente {
     private String cidade;
     private String uf;
     private String cep;
-    private String documento; // opcional
+    private String documento;
 
     public Cliente() {
     }
 
-    public Cliente(String nome, String email, String endereco, String cidade, String uf, String cep, String documento) {
+    public Cliente(Long id, String nome, String email, String endereco, String cidade, String uf, String cep, String documento) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.endereco = endereco;
@@ -26,13 +34,12 @@ public class Cliente {
         this.documento = documento;
     }
 
-    public Cliente(String nome, String email, String endereco, String cidade, String uf, String cep) {
-        this.nome = nome;
-        this.email = email;
-        this.endereco = endereco;
-        this.cidade = cidade;
-        this.uf = uf;
-        this.cep = cep;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {

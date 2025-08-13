@@ -16,13 +16,14 @@ public class ItemFatura {
 
     private String descricao;
     private Integer quantidade;
-    private BigDecimal valorUnitario;
-    private BigDecimal valorTotal;
+    private Double valorUnitario;
+    private Double valorTotal;
 
     public ItemFatura() {
     }
 
-    public ItemFatura(String descricao, Integer quantidade, BigDecimal valorUnitario, BigDecimal valorTotal) {
+    public ItemFatura(Long id, String descricao, Integer quantidade, Double valorUnitario, Double valorTotal) {
+        this.id = id;
         this.descricao = descricao;
         this.quantidade = quantidade;
         this.valorUnitario = valorUnitario;
@@ -53,19 +54,19 @@ public class ItemFatura {
         this.quantidade = quantidade;
     }
 
-    public BigDecimal getValorUnitario() {
+    public Double getValorUnitario() {
         return valorUnitario;
     }
 
-    public void setValorUnitario(BigDecimal valorUnitario) {
+    public void setValorUnitario(Double valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
 
-    public BigDecimal getValorTotal() {
+    public Double getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(BigDecimal valorTotal) {
+    public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
     }
 }

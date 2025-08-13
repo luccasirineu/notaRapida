@@ -1,10 +1,8 @@
 package com.notaRapida.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +18,30 @@ public class Fatura {
 
     private LocalDate vencimento;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)  //orphanRemoval serve para remover todos os registros que sao orfaos dele
+    @JoinColumn(name = "fatura_id")
     private List<ItemFatura> itens = new ArrayList<>();
 
     private String observacoes;
+
+    private BigDecimal valorTotal;
 
 
     public Fatura() {
     }
 
-    public Fatura(String nomeFatura, LocalDate vencimento, Cliente cliente, List<ItemFatura> itens, String observacoes) {
+    public Fatura(Long id, String nomeFatura, LocalDate vencimento, Cliente cliente, List<ItemFatura> itens, String observacoes, BigDecimal valorTotal) {
+        this.id = id;
         this.nomeFatura = nomeFatura;
         this.vencimento = vencimento;
         this.cliente = cliente;
         this.itens = itens;
         this.observacoes = observacoes;
+        this.valorTotal = valorTotal;
     }
 
     public Long getId() {
@@ -84,5 +90,13 @@ public class Fatura {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

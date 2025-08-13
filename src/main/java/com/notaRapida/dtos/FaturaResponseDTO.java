@@ -1,7 +1,8 @@
 package com.notaRapida.dtos;
 
-import com.notaRapida.models.ItemFatura;
+import com.notaRapida.dtos.ItemFaturaRequestDTO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,19 +12,17 @@ public class FaturaResponseDTO {
     private String nomeFatura;
     private LocalDate vencimento;
     private String observacoes;
-    private Double valorTotal;
+    private BigDecimal valorTotal;
 
-    // Dados do Cliente
     private ClienteDTO cliente;
 
-    // Itens da Fatura
-    private List<ItemFatura> itens;
+    private List<ItemFaturaRequestDTO> itens;
 
     public FaturaResponseDTO() {
     }
 
-    public FaturaResponseDTO(Long id, String nomeFatura, LocalDate vencimento, String observacoes, Double valorTotal,
-                             ClienteDTO cliente, List<ItemFatura> itens) {
+    public FaturaResponseDTO(Long id, String nomeFatura, LocalDate vencimento, String observacoes, BigDecimal valorTotal,
+                             ClienteDTO cliente, List<ItemFaturaRequestDTO> itens) {
         this.id = id;
         this.nomeFatura = nomeFatura;
         this.vencimento = vencimento;
@@ -65,11 +64,11 @@ public class FaturaResponseDTO {
         this.observacoes = observacoes;
     }
 
-    public Double getValorTotal() {
+    public BigDecimal getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(Double valorTotal) {
+    public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
     }
 
@@ -81,11 +80,11 @@ public class FaturaResponseDTO {
         this.cliente = cliente;
     }
 
-    public List<ItemFatura> getItens() {
+    public List<ItemFaturaRequestDTO> getItens() {
         return itens;
     }
 
-    public void setItens(List<ItemFatura> itens) {
+    public void setItens(List<ItemFaturaRequestDTO> itens) {
         this.itens = itens;
     }
 }

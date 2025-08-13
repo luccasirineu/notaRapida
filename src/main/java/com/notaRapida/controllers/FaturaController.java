@@ -5,6 +5,7 @@ package com.notaRapida.controllers;
 
 import com.notaRapida.dtos.FaturaRequestDTO;
 import com.notaRapida.dtos.FaturaResponseDTO;
+import com.notaRapida.services.FaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,12 @@ public class FaturaController {
 
 
     @PostMapping
-    public ResponseEntity<FaturaResponseDTO> createInvoice(@RequestBody FaturaRequestDTO requestDTO) {
+    public ResponseEntity<FaturaResponseDTO> createFatura(@RequestBody FaturaRequestDTO requestDTO) {
         FaturaResponseDTO response = faturaService.createFatura(requestDTO);
         return ResponseEntity.ok(response);
     }
+
+    /*
 
     @GetMapping
     public ResponseEntity<List<FaturaResponseDTO>> getAllInvoices() {
@@ -43,4 +46,6 @@ public class FaturaController {
         faturaService.deleteFatura(id);
         return ResponseEntity.noContent().build();
     }
+
+     */
 }

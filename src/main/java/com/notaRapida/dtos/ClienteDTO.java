@@ -6,23 +6,24 @@ public class ClienteDTO {
     private String email;
     private String endereco;
     private String cidade;
-    private String estado;
+    private String uf;
     private String cep;
     private String documento;
-
 
     public ClienteDTO() {
     }
 
-    public ClienteDTO(String nome, String email, String endereco, String cidade, String estado, String cep, String documento) {
+    public ClienteDTO(String nome, String email, String endereco, String cidade, String uf, String cep, String documento) {
         this.nome = nome;
         this.email = email;
         this.endereco = endereco;
         this.cidade = cidade;
-        this.estado = estado;
+        this.uf = uf;
         this.cep = cep;
         this.documento = documento;
     }
+
+  
 
     public String getNome() {
         return nome;
@@ -56,12 +57,12 @@ public class ClienteDTO {
         this.cidade = cidade;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getUf() {
+        return uf;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
     public String getCep() {
