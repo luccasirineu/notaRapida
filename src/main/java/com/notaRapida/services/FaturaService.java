@@ -33,6 +33,7 @@ public class FaturaService {
             Cliente novo = new Cliente();
             novo.setNome(requestDTO.getClienteDTO().getNome());
             novo.setEmail(requestDTO.getClienteDTO().getEmail());
+            novo.setDocumento(requestDTO.getClienteDTO().getDocumento());
             novo.setEndereco(requestDTO.getClienteDTO().getEndereco());
             novo.setCidade(requestDTO.getClienteDTO().getCidade());
             novo.setUf(requestDTO.getClienteDTO().getUf());
