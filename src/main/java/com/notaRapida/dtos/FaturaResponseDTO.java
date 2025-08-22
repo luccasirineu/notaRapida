@@ -14,7 +14,7 @@ public class FaturaResponseDTO {
     private String observacoes;
     private BigDecimal valorTotal;
 
-    private ClienteDTO cliente;
+    private ClienteDTO clienteDTO;
 
     private List<ItemFaturaRequestDTO> itens;
 
@@ -28,7 +28,7 @@ public class FaturaResponseDTO {
         this.vencimento = vencimento;
         this.observacoes = observacoes;
         this.valorTotal = valorTotal;
-        this.cliente = cliente;
+        this.clienteDTO = cliente;
         this.itens = itens;
     }
 
@@ -72,12 +72,12 @@ public class FaturaResponseDTO {
         this.valorTotal = valorTotal;
     }
 
-    public ClienteDTO getCliente() {
-        return cliente;
+    public ClienteDTO getClienteDTO() {
+        return clienteDTO;
     }
 
     public void setCliente(ClienteDTO cliente) {
-        this.cliente = cliente;
+        this.clienteDTO = cliente;
     }
 
     public List<ItemFaturaRequestDTO> getItens() {
