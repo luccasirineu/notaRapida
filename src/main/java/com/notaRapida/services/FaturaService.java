@@ -4,6 +4,7 @@ import com.notaRapida.dtos.ClienteDTO;
 import com.notaRapida.dtos.FaturaRequestDTO;
 import com.notaRapida.dtos.FaturaResponseDTO;
 import com.notaRapida.dtos.ItemFaturaRequestDTO;
+import com.notaRapida.exceptions.DadosInvalidosException;
 import com.notaRapida.models.Cliente;
 import com.notaRapida.models.Fatura;
 import com.notaRapida.models.ItemFatura;
@@ -26,6 +27,10 @@ public class FaturaService {
 
 
     public FaturaResponseDTO createFatura(FaturaRequestDTO requestDTO) {
+
+        if (requestDTO.getClienteDTO().getDocumento() == null || requestDTO.getClienteDTO().getDocumento().isBlank()){
+            throw new DadosInvalidosException("DADOS INVALIDOS OU INCOMPLETOS");
+        }
 
         Cliente cliente = clienteRepository.findByDocumento(requestDTO.getClienteDTO().getDocumento())
         .orElseGet(() -> {
