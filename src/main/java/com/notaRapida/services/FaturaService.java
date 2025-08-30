@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -97,4 +98,55 @@ public class FaturaService {
 
 
     }
+
+    public List<FaturaResponseDTO> listarHistorico() {
+        List<Fatura> faturas = faturaRepository.findAll();
+
+        return faturas.stream().map(this::converterParaDTO) .toList();
+    }
+
+
+
+    private FaturaResponseDTO converterParaDTO(Fatura fatura) {
+        return new FaturaResponseDTO(fatura.getId(),
+                fatura.getNomeFatura(),
+                fatura.getVencimento(),
+                fatura.getObservacoes(),
+                fatura.getValorTotal(),
+                converterClienteParaDTO(fatura.getCliente()),
+                converterItensParaDTO(fatura.getItens()));
+    }
+
+    private ClienteDTO converterClienteParaDTO(Cliente cliente) {
+        if (cliente == null) return null;
+        return new ClienteDTO(
+                cliente.getNome(),
+                cliente.getEmail(),
+                cliente.getEndereco(),
+                cliente.getCidade(),
+                cliente.getUf(),
+                cliente.getCep(),
+                cliente.getDocumento()
+        );
+    }
+
+
+    private ItemFaturaRequestDTO converterItemParaDTO(ItemFatura item) {
+        if (item == null) return null;
+        return new ItemFaturaRequestDTO(
+                item.getDescricao(),
+                item.getQuantidade(),
+                item.getValorUnitario()
+
+        );
+    }
+
+    private List<ItemFaturaRequestDTO> converterItensParaDTO(List<ItemFatura> itens) {
+        if (itens == null) return Collections.emptyList();
+        return itens.stream()
+                .map(this::converterItemParaDTO)
+                .toList();
+    }
 }
+
+

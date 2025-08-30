@@ -35,5 +35,12 @@ public class FaturaController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/historico")
+    public ResponseEntity<List<FaturaResponseDTO>> listarHistorico() {
+        List<FaturaResponseDTO> historico = faturaService.listarHistorico();
+        return ResponseEntity.ok(historico);
+    }
+
+
 
 }
