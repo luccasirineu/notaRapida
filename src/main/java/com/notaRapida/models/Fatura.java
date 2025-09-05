@@ -30,11 +30,15 @@ public class Fatura {
 
     private BigDecimal valorTotal;
 
+    @Lob
+    @Column( columnDefinition = "LONGBLOB")
+    private byte[] arquivoPdf;
+
 
     public Fatura() {
     }
 
-    public Fatura(Long id, String nomeFatura, LocalDate vencimento, Cliente cliente, List<ItemFatura> itens, String observacoes, BigDecimal valorTotal) {
+    public Fatura(Long id, String nomeFatura, LocalDate vencimento, Cliente cliente, List<ItemFatura> itens, String observacoes, BigDecimal valorTotal, byte[] arquivoPdf) {
         this.id = id;
         this.nomeFatura = nomeFatura;
         this.vencimento = vencimento;
@@ -42,6 +46,7 @@ public class Fatura {
         this.itens = itens;
         this.observacoes = observacoes;
         this.valorTotal = valorTotal;
+        this.arquivoPdf = arquivoPdf;
     }
 
     public Long getId() {
@@ -98,5 +103,13 @@ public class Fatura {
 
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public byte[] getArquivoPdf() {
+        return arquivoPdf;
+    }
+
+    public void setArquivoPdf(byte[] arquivoPdf) {
+        this.arquivoPdf = arquivoPdf;
     }
 }

@@ -1,5 +1,9 @@
 package com.notaRapida.services;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import com.notaRapida.dtos.ClienteDTO;
 import com.notaRapida.dtos.FaturaRequestDTO;
 import com.notaRapida.dtos.FaturaResponseDTO;
@@ -13,9 +17,11 @@ import com.notaRapida.repositories.FaturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FaturaService {
@@ -25,6 +31,14 @@ public class FaturaService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    public FaturaResponseDTO findById(Long id) {
+        Fatura fatura = faturaRepository.findById(id)
+                .orElseThrow(() -> new DadosInvalidosException("Fatura não encontrada"));
+
+        FaturaResponseDTO faturaResponseDTO = converterFaturaParaDTO(fatura);
+        return faturaResponseDTO;
+    }
 
 
     public FaturaResponseDTO createFatura(FaturaRequestDTO requestDTO) {
@@ -53,6 +67,9 @@ public class FaturaService {
         fatura.setObservacoes(requestDTO.getObservacoes());
         fatura.setValorTotal(requestDTO.getValorTotal());
         fatura.setCliente(cliente);
+
+        byte[] pdfBytes = gerarPdfFatura(fatura);
+        fatura.setArquivoPdf(pdfBytes);
 
 
         List<ItemFatura> itens = new ArrayList<>();
@@ -102,12 +119,12 @@ public class FaturaService {
     public List<FaturaResponseDTO> listarHistorico() {
         List<Fatura> faturas = faturaRepository.findAll();
 
-        return faturas.stream().map(this::converterParaDTO) .toList();
+        return faturas.stream().map(this::converterFaturaParaDTO) .toList();
     }
 
 
 
-    private FaturaResponseDTO converterParaDTO(Fatura fatura) {
+    private FaturaResponseDTO converterFaturaParaDTO(Fatura fatura) {
         return new FaturaResponseDTO(fatura.getId(),
                 fatura.getNomeFatura(),
                 fatura.getVencimento(),
@@ -130,7 +147,6 @@ public class FaturaService {
         );
     }
 
-
     private ItemFaturaRequestDTO converterItemParaDTO(ItemFatura item) {
         if (item == null) return null;
         return new ItemFaturaRequestDTO(
@@ -146,6 +162,27 @@ public class FaturaService {
         return itens.stream()
                 .map(this::converterItemParaDTO)
                 .toList();
+    }
+
+
+    public byte[] gerarPdfFatura(Fatura fatura) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            PdfWriter writer = new PdfWriter(baos);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("Fatura: " + fatura.getNomeFatura()));
+            document.add(new Paragraph("Cliente: " + fatura.getCliente().getNome()));
+            document.add(new Paragraph("Documento: " + fatura.getCliente().getDocumento()));
+            document.add(new Paragraph("Data de Vencimento: " + fatura.getVencimento()));
+            document.add(new Paragraph("Valor Total: R$ " + fatura.getValorTotal()));
+
+            document.close();
+
+            return baos.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao gerar PDF da fatura", e);
+        }
     }
 }
 

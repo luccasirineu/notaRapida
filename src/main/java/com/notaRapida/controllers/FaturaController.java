@@ -5,6 +5,7 @@ package com.notaRapida.controllers;
 
 import com.notaRapida.dtos.FaturaRequestDTO;
 import com.notaRapida.dtos.FaturaResponseDTO;
+import com.notaRapida.models.Fatura;
 import com.notaRapida.services.FaturaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +38,20 @@ public class FaturaController {
 
     @GetMapping("/historico")
     public ResponseEntity<List<FaturaResponseDTO>> listarHistorico() {
+        logger.info("Buscando historico completo do user");
+
         List<FaturaResponseDTO> historico = faturaService.listarHistorico();
         return ResponseEntity.ok(historico);
+    }
+
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FaturaResponseDTO> buscarFatura(@PathVariable Long id) {
+
+        FaturaResponseDTO faturaResponseDTO = faturaService.findById(id);
+
+        return ResponseEntity.ok(faturaResponseDTO);
     }
 
 
