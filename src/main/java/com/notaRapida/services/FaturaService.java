@@ -7,10 +7,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
-import com.notaRapida.dtos.ClienteDTO;
-import com.notaRapida.dtos.FaturaRequestDTO;
-import com.notaRapida.dtos.FaturaResponseDTO;
-import com.notaRapida.dtos.ItemFaturaRequestDTO;
+import com.notaRapida.dtos.*;
 import com.notaRapida.exceptions.DadosInvalidosException;
 import com.notaRapida.models.Cliente;
 import com.notaRapida.models.Fatura;
@@ -68,6 +65,7 @@ public class FaturaService {
         fatura.setObservacoes(requestDTO.getObservacoes());
         fatura.setValorTotal(requestDTO.getValorTotal());
         fatura.setCliente(cliente);
+        fatura.setStatus("PENDENTE");
 
         byte[] pdfBytes = gerarPdfFatura(fatura);
         fatura.setArquivoPdf(pdfBytes);
@@ -244,6 +242,8 @@ public class FaturaService {
             throw new RuntimeException("Erro ao gerar PDF da fatura", e);
         }
     }
+
+
 }
 
 
