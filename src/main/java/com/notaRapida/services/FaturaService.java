@@ -4,6 +4,9 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import com.notaRapida.dtos.ClienteDTO;
 import com.notaRapida.dtos.FaturaRequestDTO;
 import com.notaRapida.dtos.FaturaResponseDTO;
@@ -32,14 +35,12 @@ public class FaturaService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public FaturaResponseDTO findById(Long id) {
+    public Fatura findById(Long id) {
         Fatura fatura = faturaRepository.findById(id)
                 .orElseThrow(() -> new DadosInvalidosException("Fatura não encontrada"));
 
-        FaturaResponseDTO faturaResponseDTO = converterFaturaParaDTO(fatura);
-        return faturaResponseDTO;
+        return fatura;
     }
-
 
     public FaturaResponseDTO createFatura(FaturaRequestDTO requestDTO) {
 
@@ -122,8 +123,6 @@ public class FaturaService {
         return faturas.stream().map(this::converterFaturaParaDTO) .toList();
     }
 
-
-
     private FaturaResponseDTO converterFaturaParaDTO(Fatura fatura) {
         return new FaturaResponseDTO(fatura.getId(),
                 fatura.getNomeFatura(),
@@ -164,21 +163,82 @@ public class FaturaService {
                 .toList();
     }
 
-
     public byte[] gerarPdfFatura(Fatura fatura) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             PdfWriter writer = new PdfWriter(baos);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            document.add(new Paragraph("Fatura: " + fatura.getNomeFatura()));
-            document.add(new Paragraph("Cliente: " + fatura.getCliente().getNome()));
-            document.add(new Paragraph("Documento: " + fatura.getCliente().getDocumento()));
-            document.add(new Paragraph("Data de Vencimento: " + fatura.getVencimento()));
-            document.add(new Paragraph("Valor Total: R$ " + fatura.getValorTotal()));
+            // --- Logo + Título ---
+            //Image logo = new Image(ImageDataFactory.create("src/main/resources/static/assets/logoNotaRapida.png"));
+            //logo.setWidth(100);
+            //document.add(logo);
+
+            Paragraph titulo = new Paragraph("FATURA")
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontSize(18)
+                    .setBold();
+            document.add(titulo);
+            document.add(new Paragraph("\n"));
+
+            // --- Dados do Cliente ---
+            Table tabelaCliente = new Table(2);
+            tabelaCliente.addCell("Cliente:");
+            tabelaCliente.addCell(fatura.getCliente().getNome());
+            tabelaCliente.addCell("Documento:");
+            tabelaCliente.addCell(fatura.getCliente().getDocumento());
+            tabelaCliente.addCell("E-mail:");
+            tabelaCliente.addCell(fatura.getCliente().getEmail());
+            tabelaCliente.addCell("Endereço:");
+            tabelaCliente.addCell(fatura.getCliente().getEndereco() + " - "
+                    + fatura.getCliente().getCidade() + "/"
+                    + fatura.getCliente().getUf());
+            document.add(tabelaCliente);
+            document.add(new Paragraph("\n"));
+
+            // --- Dados da Fatura ---
+            Table tabelaFatura = new Table(2);
+            tabelaFatura.addCell("Número da Fatura:");
+            tabelaFatura.addCell(fatura.getNomeFatura());
+            tabelaFatura.addCell("Data de Vencimento:");
+            tabelaFatura.addCell(fatura.getVencimento().toString());
+            tabelaFatura.addCell("Observações:");
+            tabelaFatura.addCell(fatura.getObservacoes() != null ? fatura.getObservacoes() : "-");
+            document.add(tabelaFatura);
+            document.add(new Paragraph("\n"));
+
+            // --- Itens ---
+            Table tabelaItens = new Table(new float[]{4, 1, 2, 2});
+            tabelaItens.setWidth(UnitValue.createPercentValue(100));
+            tabelaItens.addHeaderCell("Descrição");
+            tabelaItens.addHeaderCell("Qtd");
+            tabelaItens.addHeaderCell("Valor Unit.");
+            tabelaItens.addHeaderCell("Subtotal");
+
+            fatura.getItens().forEach(item -> {
+                tabelaItens.addCell(item.getDescricao());
+                tabelaItens.addCell(String.valueOf(item.getQuantidade()));
+                tabelaItens.addCell("R$ " + item.getValorUnitario());
+                tabelaItens.addCell("R$ " + item.getValorTotal());
+            });
+
+            document.add(tabelaItens);
+            document.add(new Paragraph("\n"));
+
+            // --- Total ---
+            Paragraph total = new Paragraph("TOTAL: R$ " + fatura.getValorTotal())
+                    .setBold()
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setFontSize(14);
+            document.add(total);
+
+            // --- Rodapé ---
+            document.add(new Paragraph("\n\nObrigado por escolher o NotaRápida!")
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontSize(10)
+                    .setItalic());
 
             document.close();
-
             return baos.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("Erro ao gerar PDF da fatura", e);

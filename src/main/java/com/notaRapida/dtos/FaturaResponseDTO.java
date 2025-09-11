@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FaturaResponseDTO {
 
-    private Long id; // ID da fatura gerada
+    private Long id;
     private String nomeFatura;
     private LocalDate vencimento;
     private String observacoes;
