@@ -12,6 +12,7 @@ import com.notaRapida.exceptions.DadosInvalidosException;
 import com.notaRapida.models.Cliente;
 import com.notaRapida.models.Fatura;
 import com.notaRapida.models.ItemFatura;
+import com.notaRapida.models.enums.StatusFatura;
 import com.notaRapida.repositories.ClienteRepository;
 import com.notaRapida.repositories.FaturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class FaturaService {
         fatura.setObservacoes(requestDTO.getObservacoes());
         fatura.setValorTotal(requestDTO.getValorTotal());
         fatura.setCliente(cliente);
-        fatura.setStatus("PENDENTE");
+        fatura.setStatus(StatusFatura.PENDENTE);
 
         byte[] pdfBytes = gerarPdfFatura(fatura);
         fatura.setArquivoPdf(pdfBytes);
@@ -109,7 +110,7 @@ public class FaturaService {
         }
 
         return new FaturaResponseDTO(faturaSaved.getId(), faturaSaved.getNomeFatura(), faturaSaved.getVencimento(),
-                faturaSaved.getObservacoes(), faturaSaved.getValorTotal(), clienteDTO , itensDTO);
+                faturaSaved.getObservacoes(), faturaSaved.getValorTotal(), clienteDTO , itensDTO, faturaSaved.getStatus());
 
 
 
@@ -128,7 +129,8 @@ public class FaturaService {
                 fatura.getObservacoes(),
                 fatura.getValorTotal(),
                 converterClienteParaDTO(fatura.getCliente()),
-                converterItensParaDTO(fatura.getItens()));
+                converterItensParaDTO(fatura.getItens()),
+                fatura.getStatus());
     }
 
     private ClienteDTO converterClienteParaDTO(Cliente cliente) {
@@ -241,6 +243,19 @@ public class FaturaService {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao gerar PDF da fatura", e);
         }
+    }
+
+    public Fatura atualizarStatus(Long id, StatusFatura novoStatus) {
+        Optional<Fatura> faturaOpt = faturaRepository.findById(id);
+
+        if (faturaOpt.isEmpty()) {
+            throw new RuntimeException("Fatura não encontrada com id: " + id);
+        }
+
+        Fatura fatura = faturaOpt.get();
+        fatura.setStatus(novoStatus);
+
+        return faturaRepository.save(fatura);
     }
 
 

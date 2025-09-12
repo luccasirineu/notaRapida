@@ -1,20 +1,22 @@
 package com.notaRapida.dtos;
 
+import com.notaRapida.models.enums.StatusFatura;
+
 import java.math.BigDecimal;
 
 public class FaturaResumoDTO {
     private String codigo;
     private String cliente;
     private BigDecimal valorTotal;
-    private String status;
+    private StatusFatura status;
 
     public FaturaResumoDTO() {
     }
 
-    public FaturaResumoDTO(String codigo, String cliente, BigDecimal valorTotal, String status) {
+    public FaturaResumoDTO(String codigo, String cliente, BigDecimal valorTotal, StatusFatura status) {
         this.codigo = codigo;
         this.cliente = cliente;
-        this.valor = valorTotal;
+        this.valorTotal = valorTotal;
         this.status = status;
     }
 
@@ -42,11 +44,21 @@ public class FaturaResumoDTO {
         this.valorTotal = valorTotal;
     }
 
-    public String getStatus() {
+    public StatusFatura getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusFatura status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "FaturaResumoDTO{" +
+                "codigo='" + codigo + '\'' +
+                ", cliente='" + cliente + '\'' +
+                ", valorTotal=" + valorTotal +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.notaRapida.models;
 
+import com.notaRapida.models.enums.StatusFatura;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -34,13 +35,14 @@ public class Fatura {
     @Column( columnDefinition = "LONGBLOB")
     private byte[] arquivoPdf;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusFatura status ;
 
 
     public Fatura() {
     }
 
-    public Fatura(Long id, String nomeFatura, LocalDate vencimento, Cliente cliente, List<ItemFatura> itens, String observacoes, BigDecimal valorTotal, byte[] arquivoPdf, String status) {
+    public Fatura(Long id, String nomeFatura, LocalDate vencimento, Cliente cliente, List<ItemFatura> itens, String observacoes, BigDecimal valorTotal, byte[] arquivoPdf, StatusFatura status) {
         this.id = id;
         this.nomeFatura = nomeFatura;
         this.vencimento = vencimento;
@@ -116,11 +118,11 @@ public class Fatura {
         this.arquivoPdf = arquivoPdf;
     }
 
-    public String getStatus() {
+    public StatusFatura getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusFatura status) {
         this.status = status;
     }
 }

@@ -60,4 +60,15 @@ public class DashboardDTO {
     public void setFaturasRecentes(List<FaturaResumoDTO> faturasRecentes) {
         this.faturasRecentes = faturasRecentes;
     }
+
+    @Override
+    public String toString() {
+        return "DashboardDTO{" +
+                "totalFaturas=" + totalFaturas +
+                ", valorTotal=" + valorTotal +
+                ", faturasVencidas=" + faturasVencidas +
+                ", proximosVencimentos=" + proximosVencimentos +
+                ", faturasRecentes=" + faturasRecentes +
+                '}';
+    }
 }

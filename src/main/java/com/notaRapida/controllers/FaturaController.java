@@ -6,6 +6,7 @@ package com.notaRapida.controllers;
 import com.notaRapida.dtos.FaturaRequestDTO;
 import com.notaRapida.dtos.FaturaResponseDTO;
 import com.notaRapida.models.Fatura;
+import com.notaRapida.models.enums.StatusFatura;
 import com.notaRapida.services.FaturaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,11 @@ public class FaturaController {
                 .contentType(MediaType.APPLICATION_PDF).body(pdf);
     }
 
-
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Fatura> atualizarStatus(@PathVariable Long id, @RequestBody StatusFatura statusFatura) {
+        Fatura faturaAtualizada = faturaService.atualizarStatus(id, statusFatura);
+        return ResponseEntity.ok(faturaAtualizada);
+    }
 
 
 

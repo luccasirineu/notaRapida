@@ -1,6 +1,7 @@
 package com.notaRapida.dtos;
 
 import com.notaRapida.dtos.ItemFaturaRequestDTO;
+import com.notaRapida.models.enums.StatusFatura;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,11 +19,15 @@ public class FaturaResponseDTO {
 
     private List<ItemFaturaRequestDTO> itens;
 
+    private StatusFatura statusFatura;
+
+
+
     public FaturaResponseDTO() {
     }
 
     public FaturaResponseDTO(Long id, String nomeFatura, LocalDate vencimento, String observacoes, BigDecimal valorTotal,
-                             ClienteDTO cliente, List<ItemFaturaRequestDTO> itens) {
+                             ClienteDTO cliente, List<ItemFaturaRequestDTO> itens, StatusFatura statusFatura) {
         this.id = id;
         this.nomeFatura = nomeFatura;
         this.vencimento = vencimento;
@@ -30,6 +35,7 @@ public class FaturaResponseDTO {
         this.valorTotal = valorTotal;
         this.clienteDTO = cliente;
         this.itens = itens;
+        this.statusFatura = statusFatura;
     }
 
     public Long getId() {
@@ -86,5 +92,13 @@ public class FaturaResponseDTO {
 
     public void setItens(List<ItemFaturaRequestDTO> itens) {
         this.itens = itens;
+    }
+
+    public StatusFatura getStatusFatura() {
+        return statusFatura;
+    }
+
+    public void setStatusFatura(StatusFatura statusFatura) {
+        this.statusFatura = statusFatura;
     }
 }

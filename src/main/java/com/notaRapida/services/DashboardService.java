@@ -3,6 +3,7 @@ package com.notaRapida.services;
 import com.notaRapida.dtos.DashboardDTO;
 import com.notaRapida.dtos.FaturaResumoDTO;
 import com.notaRapida.models.Fatura;
+import com.notaRapida.models.enums.StatusFatura;
 import com.notaRapida.repositories.FaturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class DashboardService {
     public DashboardDTO getDashboardData() {
         long totalFaturas = faturaRepository.count();
         double valorTotal = faturaRepository.sumAllValores();
-        long faturasVencidas = faturaRepository.countByStatus("VENCIDO");
+        long faturasVencidas = faturaRepository.countByStatus(StatusFatura.VENCIDO);
         long proximosVencimentos = faturaRepository.countByVencimentoBetween(
                 LocalDate.now(), LocalDate.now().plusDays(7));
 
