@@ -44,6 +44,7 @@ public class FaturaController {
         logger.info("Buscando historico completo do user");
 
         List<FaturaResponseDTO> historico = faturaService.listarHistorico();
+        logger.info("Resultado historico : {}", historico);
         return ResponseEntity.ok(historico);
     }
 

@@ -21,7 +21,7 @@ public class DashboardService {
     public DashboardDTO getDashboardData() {
         long totalFaturas = faturaRepository.count();
         double valorTotal = faturaRepository.sumAllValores();
-        long faturasVencidas = faturaRepository.countByStatus(StatusFatura.VENCIDO);
+        long faturasVencidas = faturaRepository.countByStatus(StatusFatura.VENCIDA);
         long proximosVencimentos = faturaRepository.countByVencimentoBetween(
                 LocalDate.now(), LocalDate.now().plusDays(7));
 

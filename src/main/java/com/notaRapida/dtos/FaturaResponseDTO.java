@@ -101,4 +101,18 @@ public class FaturaResponseDTO {
     public void setStatusFatura(StatusFatura statusFatura) {
         this.statusFatura = statusFatura;
     }
+
+    @Override
+    public String toString() {
+        return "FaturaResponseDTO{" +
+                "id=" + id +
+                ", nomeFatura='" + nomeFatura + '\'' +
+                ", vencimento=" + vencimento +
+                ", observacoes='" + observacoes + '\'' +
+                ", valorTotal=" + valorTotal +
+                ", clienteDTO=" + clienteDTO +
+                ", itens=" + itens +
+                ", statusFatura=" + statusFatura +
+                '}';
+    }
 }
